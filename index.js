@@ -96,6 +96,21 @@ async function startXeonBotInc() {
         const { state, saveCreds } = await useMultiFileAuthState(`./session`)
         const msgRetryCounterCache = new NodeCache()
 
+const pairingCode = true; // اجعلها false إذا أردت QR
+
+if (pairingCode && !XeonBotInc.authState.creds.registered) {
+    const phoneNumber = "212657394310"; // ضع رقمك بدون +
+
+    setTimeout(async () => {
+        try {
+            const code = await XeonBotInc.requestPairingCode(phoneNumber);
+            console.log(" Pairing Code:", code);
+        } catch (err) {
+            console.error("خطأ في إنشاء رمز الاقتران:", err);
+        }
+    }, 3000);
+}
+        
         const XeonBotInc = makeWASocket({
             version,
             logger: pino({ level: 'silent' }),
